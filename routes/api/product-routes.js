@@ -74,18 +74,18 @@ router.post('/', (req, res) => {
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
-        const productTagIdArr = req.body.tagIds.map((tag_id) => {
+        const Arr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
             tag_id,
           };
         });
-        return ProductTag.bulkCreate(productTagIdArr);
+        return ProductTag.bulkCreate(Arr);
       }
       // if no product tags, just respond
       res.status(200).json(product);
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
+    .then((productTag) => res.status(200).json(productTag))
     .catch((err) => {
       console.log(err);
       res.status(400).json(err);
@@ -127,7 +127,7 @@ router.put('/:id', (req, res) => {
         ProductTag.bulkCreate(newProductTags),
       ]);
     })
-    .then((updatedProductTags) => res.json(updatedProductTags))
+    .then((ProductTags) => res.json(ProductTags))
     .catch((err) => {
       // console.log(err);
       res.status(400).json(err);
@@ -141,12 +141,12 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
-  .then(dbProductData => {
-    if (!dbProductData) {
+  .then(ProductData => {
+    if (!ProductData) {
       rs.status(404).json({message: 'No product found with this id'});
       return;
     }
-    res.json(dbProductData);
+    res.json(ProductData);
   })
   .catch(err => {
     console.log(err);
